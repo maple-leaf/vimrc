@@ -243,7 +243,7 @@ set path=~/
 set rtp+=$VIMFILES
 
 " create folder to store sessions
-call EnsureDirExists($HOME . '/vim/sessions/')
+call EnsureDirExists($HOME . '/.vim/sessions/')
 " change path to work folder at startup
 " :cd d:\tang\source_code\projects
 
@@ -390,10 +390,10 @@ highlight clear LineNr          " Current line number row will have same backgro
 "highlight clear CursorLineNr    " Remove highlight color from current line number
 
 " backup and swapfile
-call EnsureDirExists($HOME . '/vim/tmp/backup/')
-call EnsureDirExists($HOME . '/vim/tmp/swap/')
-set backupdir=~/vim/tmp/backup//
-set directory=~/vim/tmp/swap//
+call EnsureDirExists($HOME . '/.vim/tmp/backup/')
+call EnsureDirExists($HOME . '/.vim/tmp/swap/')
+set backupdir=$HOME/.vim/tmp/backup/
+set directory=$HOME/.vim/tmp/swap/
 " set nobackup
 " set nowb
 " set noswapfile
