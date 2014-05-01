@@ -102,7 +102,6 @@ Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'danro/rename.vim'
-Bundle 'Lokaltog/vim-easymotion'
 " Colorscheme
 Bundle 'altercation/vim-colors-solarized'
 " makes GVim-only colorschemes Just Work in terminal Vim
@@ -284,12 +283,13 @@ set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 " Remove trailing whitespaces and ^M chars
 autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> if !exists('g:keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
 autocmd FileType go autocmd BufWritePre <buffer> Fmt
-autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
 autocmd FileType haskell setlocal expandtab shiftwidth=2 softtabstop=2
 autocmd FileType html,xml,xhtml set fdm=indent | set fdl=3
 " preceding line best in a plugin but here for now.
 
 autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
+autocmd BufNewFile,BufRead *.hbs set filetype=html
 
 " Workaround vim-commentary for Haskell
 autocmd FileType haskell setlocal commentstring=--\ %s
@@ -930,10 +930,6 @@ onoremap int :<c-u>normal! f<vit<cr>
         nmap <silent> <C-Up>  <Plug>FontsizeInc
         nmap <silent> <C-Down>  <Plug>FontsizeDec
     "}}}
-
-    " Easymotion {{{
-    map ; <Plug>(easymotion-prefix)
-    " }}}
 
     "syntastic {{{
     " sass syntax checking is so slow, so don't check it auto
