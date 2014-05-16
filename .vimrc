@@ -278,29 +278,12 @@ set nojoinspaces                " Prevents inserting two spaces after punctuatio
 set splitright                  " Puts new vsplit windows to the right of the current
 set splitbelow                  " Puts new split windows to the bottom of the current
 "set matchpairs+=<:>             " Match, to be used with %
-set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
-" Remove trailing whitespaces and ^M chars
-autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> if !exists('g:keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
-autocmd FileType haskell setlocal expandtab shiftwidth=2 softtabstop=2
-autocmd FileType html,xml,xhtml set fdm=indent | set fdl=3
-" preceding line best in a plugin but here for now.
-
-autocmd BufNewFile,BufRead *.coffee set filetype=coffee
-autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
-autocmd BufNewFile,BufRead *.hbs set filetype=html
-
-" Workaround vim-commentary for Haskell
-autocmd FileType haskell setlocal commentstring=--\ %s
-" Workaround broken colour highlighting in Haskell
-autocmd FileType haskell setlocal nospell
+set fdm=marker                  " set fold method
 
 " }
 
 
-" Silent, no beep or flash when error occur
-set noerrorbells visualbell t_vb=
 if has('autocmd')
   augroup MyAutoCommands
     " Clear old autocmds in group
@@ -308,54 +291,40 @@ if has('autocmd')
 
     " File types
     autocmd BufRead,BufNewFile *.haml setfiletype haml
-    " autocmd BufRead,BufNewFile *.sass,*.scss setfiletype sass
     autocmd BufRead,BufNewFile config.ru,Gemfile,Isolate setfiletype ruby
     autocmd BufRead,BufNewFile *.liquid,*.mustache setfiletype liquid
+    autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+    autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
+    autocmd BufNewFile,BufRead *.hbs set filetype=html
 
     " Ruby files
-    autocmd FileType cucumber set sw=2 ts=2 sts=2 et
-    autocmd FileType ruby,eruby, set sw=2 ts=2 sts=2 et
     autocmd FileType ruby,eruby, imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
-    autocmd FileType ruby nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
-    autocmd FileType ruby nnoremap <Leader>D Orequire "ruby-debug"; debugger; ""<Esc>
-
-    " HTML/HAML
-    " autocmd FileType html,haml set shiftwidth=2 softtabstop=2 expandtab
-
-    autocmd FileType haml nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
-    autocmd FileType haml nnoremap <Leader>D Orequire "ruby-debug"; debugger; ""<Esc>
-
-    " Javascript
-    " autocmd FileType javascript set shiftwidth=2 softtabstop=2 expandtab
-
-    " CSS
-    " autocmd FileType sass,css set shiftwidth=2 softtabstop=2 expandtab
-
-    " Other langs
-    autocmd FileType python,php set shiftwidth=4 softtabstop=4 expandtab
-
-    " Coffee
-    autocmd FileType coffee set shiftwidth=2 softtabstop=2 expandtab
-
-    " Vim files
-    autocmd FileType vim set shiftwidth=2 softtabstop=2 expandtab
-    " autocmd BufWritePost .vimrc source $MYVIMRC
+    autocmd FileType ruby, haml nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
+    autocmd FileType ruby, haml nnoremap <Leader>D Orequire "ruby-debug"; debugger; ""<Esc>
 
     " Auto-wrap text in all buffers
     " autocmd BufRead,BufNewFile * set formatoptions+=t
     " silent
     autocmd GUIEnter * set visualbell t_vb=
-    " short of autocmd FileType python setlocal colorcolumn=80
+    " colorcolumn=80
     au FileType python setl cc=80
-    " set highlight style
+    " Remove trailing whitespaces and ^M chars
+    autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> if !exists('g:keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
+    autocmd FileType go autocmd BufWritePre <buffer> Fmt
+    autocmd FileType haskell setlocal expandtab shiftwidth=2 softtabstop=2
+    autocmd FileType html,xml,xhtml,css,sass,scss,less set fdm=indent | set fdl=3
+    " Workaround vim-commentary for Haskell
+    autocmd FileType haskell setlocal commentstring=--\ %s
+    " Workaround broken colour highlighting in Haskell
+    autocmd FileType haskell setlocal nospell
+    if(!has('gui_running'))
+        au ColorScheme * hi CursorLine   cterm=NONE ctermbg=darkgray ctermfg=NONE guibg=darkgray guifg=NONE
+    endif
   augroup END
 
 endif
 
-if(!has('gui_running'))
-  au ColorScheme * hi CursorLine   cterm=NONE ctermbg=darkgray ctermfg=NONE guibg=darkgray guifg=NONE
-endif
 " hide the mouse pointer while typing
 set mousehide
 
@@ -370,11 +339,6 @@ syntax on
 
 " make buffer files can hidden
 set hidden
-
-" set folder method
-set fdm=marker
-au FileType html setl fdm=indent
-au FileType xhtml setl fdm=indent
 " don't update the display while executing macros
 set lazyredraw
 
