@@ -122,6 +122,8 @@ Bundle 'VisIncr'
 Bundle 'tpope/vim-abolish.git'
 " Adjust font-size
 Bundle 'drmikehenry/vim-fontsize'
+" Grep tool
+Bundle 'dkprice/vim-easygrep'
 
 " }}}
 " program fun and language support {{{
