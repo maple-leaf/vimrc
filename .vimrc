@@ -57,7 +57,7 @@ endfunction
 
 "  Pre-setting {{{
 if MySys() == "windows"
-  set shell=/bin/sh
+  "set shell=/bin/sh        " uncomment this may cause `can't find temp` error
   " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
   " across (heterogeneous) systems easier.
   set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
@@ -218,7 +218,7 @@ endif
 command! -nargs=1 Mkdir call EnsureDirExists(<f-args>)
 
 if MySys()=="windows"
-  set guifont=Monaco:h9:b
+  set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
 elseif MySys() =="linux"
   set guifont=Mono\ 12
 endif
@@ -245,8 +245,6 @@ set rtp+=$VIMFILES
 
 " create folder to store sessions
 call EnsureDirExists($HOME . '/.vim/sessions/')
-" change path to work folder at startup
-" :cd d:\tang\source_code\projects
 
 " maximum window size
 if MySys() == "windows"
@@ -263,11 +261,6 @@ set helplang="en,zh-cn"
 scriptencoding utf-8
 set encoding=utf-8
 set fileencodings=utf-8,chinese,latin-1
-if has("win32")
-  set fileencoding=chinese
-else
-  set fileencoding=utf-8
-endif
 
 "set nowrap                      " Do not wrap long lines
 set wrap lbr                    " wrap long lines between words
@@ -687,7 +680,7 @@ onoremap int :<c-u>normal! f<vit<cr>
     " vim-session {{{
         " If you don't want help windows to be restored:
         set sessionoptions-=help
-        let g:session_directory = '~/.vimsessions'
+        let g:session_directory = '~/.vim/sessions/'
         let g:session_autosave = 'yes'
         let g:session_autoload = 'no'
         let g:session_default_name = "last"
@@ -849,10 +842,12 @@ onoremap int :<c-u>normal! f<vit<cr>
 
     " UltiSnips {{{
     let g:UltiSnipsExpandTrigger = '<c-k>'
-    let g:UltiSnipsJumpForwardTrigger = '<a-j>'
-    let g:UltiSnipsSnippetsDir = '~/.vim/bundle/UltiSnips-ext/UltiSnips/'
+    let g:UltiSnipsJumpForwardTrigger = '<c-k>'
+    let g:UltiSnipsJumpBackwardTrigger = '<c-i>'
     let g:UltiSnipsEditSplit = 'horizontal'
-    let g:UltiSnipsJumpBackwardTrigger = '<a-k>'
+    if !isdirectory('~/.vim/bundle/UltiSnips-ext')
+        let g:UltiSnipsSnippetsDir = '~/.vim/bundle/UltiSnips-ext'
+    endif
     " }}}
 
     " gundo {{{
@@ -881,11 +876,9 @@ onoremap int :<c-u>normal! f<vit<cr>
         " If the previous symbols do not render for you then install a
         " powerline enabled font.
         let g:airline_theme = 'powerlineish'
-        if !exists('g:airline_powerline_fonts')
-            " Use the default set of separators with a few customizations
-            let g:airline_left_sep='›'  " Slightly fancier than '>'
-            let g:airline_right_sep='‹' " Slightly fancier than '<'
-        endif
+        " Use the default set of separators with a few customizations
+        let g:airline_left_sep='>'
+        let g:airline_right_sep='<'
         let g:airline#extensions#bufferline#enabled = 0
     " }}}
 
