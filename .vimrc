@@ -76,126 +76,126 @@ call vundle#rc()
 
 " Bundle Start {{{
 " let Vundle manage Vundle, required! 
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
 " make vim easy to use {{{
 
-Bundle 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
 " bringing Sublime Text's awesome multiple selection feature into Vim
-Bundle 'terryma/vim-multiple-cursors'
+Plugin 'terryma/vim-multiple-cursors'
 " Code and files fuzzy finder
-Bundle 'kien/ctrlp.vim'
+Plugin 'kien/ctrlp.vim'
 " Airline
-Bundle 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 " Surround
-Bundle 'tpope/vim-surround'
+Plugin 'tpope/vim-surround'
 " undo mantainment
-Bundle 'sjl/gundo.vim'
+Plugin 'sjl/gundo.vim'
 " intelligently toggling line numbers.
-Bundle 'myusuf3/numbers.vim'
+Plugin 'myusuf3/numbers.vim'
 " Autoclose
-Bundle 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-unimpaired'
 " Indent text object
-Bundle 'nathanaelkane/vim-indent-guides'
+Plugin 'nathanaelkane/vim-indent-guides'
 " vim sessions
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-session'
-Bundle 'danro/rename.vim'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
+Plugin 'danro/rename.vim'
 " Colorscheme
-Bundle 'altercation/vim-colors-solarized'
+Plugin 'altercation/vim-colors-solarized'
 " makes GVim-only colorschemes Just Work in terminal Vim
-Bundle 'godlygeek/csapprox'
+Plugin 'godlygeek/csapprox'
 " colorshcemes collection
-Bundle 'flazz/vim-colorschemes'
+Plugin 'flazz/vim-colorschemes'
 " handle gist
-Bundle 'mattn/gist-vim'
+Plugin 'mattn/gist-vim'
 " Tabularize
-Bundle 'godlygeek/tabular'
+Plugin 'godlygeek/tabular'
 " file manager
-Bundle 'mbbill/VimExplorer'
+Plugin 'mbbill/VimExplorer'
 " Search results counter
-Bundle 'IndexedSearch'
+Plugin 'IndexedSearch'
 " Produce increasing/decreasing columns of numbers, dates, or daynames
-Bundle 'VisIncr'
+Plugin 'VisIncr'
 " handy for varient words replacement
-Bundle 'tpope/vim-abolish.git'
+Plugin 'tpope/vim-abolish.git'
 " Adjust font-size
-Bundle 'drmikehenry/vim-fontsize'
+Plugin 'drmikehenry/vim-fontsize'
 " Grep tool
-Bundle 'dkprice/vim-easygrep'
+Plugin 'dkprice/vim-easygrep'
 
 " }}}
 " program fun and language support {{{
 
 " Better file browser
 " Code commenter
-Bundle 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdcommenter'
 " Class/module browser
-Bundle 'majutsushi/tagbar'
+Plugin 'majutsushi/tagbar'
 " write html ease
-Bundle 'mattn/emmet-vim'
+Plugin 'mattn/emmet-vim'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " Snippets manager (UltiSnips), and snippets repo
-Bundle 'SirVer/ultisnips'
-Bundle 'maple-leaf/UltiSnips-ext'
+Plugin 'SirVer/ultisnips'
+Plugin 'maple-leaf/UltiSnips-ext'
 " Autocompletion
-Bundle 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neocomplete.vim'
 " Git integration
-Bundle 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
 " code control of git, mercurial, darcs, bazaar, subversion, cvs, rcs, fossil, accurev, perforce
-Bundle 'mhinz/vim-signify'
+Plugin 'mhinz/vim-signify'
 " html5 syntax
-Bundle 'othree/html5.vim'
+Plugin 'othree/html5.vim'
 " Python and PHP Debugger
 " Bundle 'fisadev/vim-debug.vim'
 " XML/HTML tags navigation
-Bundle 'matchit.zip'
+Plugin 'matchit.zip'
 " Syntax checking for lots of language
-Bundle 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 " HTTP,OAuth.. protocol supporter and http,xml,json...parser
-Bundle 'mattn/webapi-vim'
-Bundle 'aperezdc/vim-template'
-Bundle 'pangloss/vim-javascript'
-Bundle 'amirh/HTML-AutoCloseTag'
-Bundle 'elzr/vim-json'
+Plugin 'mattn/webapi-vim'
+Plugin 'aperezdc/vim-template'
+Plugin 'pangloss/vim-javascript'
+Plugin 'amirh/HTML-AutoCloseTag'
+Plugin 'elzr/vim-json'
 if exists('g:support_python')
 " operators, highlighting, run and ipdb breakpoints)
-Bundle 'klen/python-mode'
+Plugin 'klen/python-mode'
 " Python code checker
-Bundle 'pyflakes.vim'
+Plugin 'pyflakes.vim'
 endif
 if exists('g:support_php')
 " php tools collection
-Bundle 'spf13/PIV'
-Bundle 'arnaud-lb/vim-php-namespace'
+Plugin 'spf13/PIV'
+Plugin 'arnaud-lb/vim-php-namespace'
 " php template engine
-Bundle 'beyondwords/vim-twig'
+Plugin 'beyondwords/vim-twig'
 endif
 " Vastly improved Javascript indentation and syntax support in Vim.
 if exists('g:support_coffee-script')
-Bundle 'kchmck/vim-coffee-script'
+Plugin 'kchmck/vim-coffee-script'
 endif
 if exists('g:support_liquid_haml')
-Bundle 'tpope/vim-haml'
+Plugin 'tpope/vim-haml'
 " Liquid markup language syntax support
-Bundle 'tpope/vim-liquid'
+Plugin 'tpope/vim-liquid'
 endif
 if exists('g:support_markdown')
-Bundle 'tpope/vim-markdown'
+Plugin 'tpope/vim-markdown'
 endif
 if exists('g:support_ruby_rails')
-Bundle 'tpope/vim-rails'
+Plugin 'tpope/vim-rails'
 endif
 if exists('g:support_less_sass')
 " less syntax
-Bundle 'groenewege/vim-less'
+Plugin 'groenewege/vim-less'
 " scss syntax
-Bundle 'cakebaker/scss-syntax.vim'
+Plugin 'cakebaker/scss-syntax.vim'
 endif
 if exists('g:support_cucumber')
-Bundle 'tpope/vim-cucumber'
-Bundle 'quentindecock/vim-cucumber-align-pipes'
+Plugin 'tpope/vim-cucumber'
+Plugin 'quentindecock/vim-cucumber-align-pipes'
 endif
 
 " }}}
