@@ -93,7 +93,7 @@ Plugin 'tpope/vim-surround'
 " undo mantainment
 Plugin 'sjl/gundo.vim'
 " intelligently toggling line numbers.
-Plugin 'myusuf3/numbers.vim'
+"Plugin 'myusuf3/numbers.vim'
 " Autoclose
 Plugin 'tpope/vim-unimpaired'
 " Indent text object
@@ -218,7 +218,7 @@ endif
 command! -nargs=1 Mkdir call EnsureDirExists(<f-args>)
 
 if MySys()=="windows"
-  set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
+  set guifont=Bitstream_Vera_Sans_Mono:h11:cANSI
 elseif MySys() =="linux"
   set guifont=Mono\ 12
 endif
@@ -258,9 +258,9 @@ endif
 " language and encoding stuff
 let $LANG ="en"
 set helplang="en,zh-cn"
-scriptencoding utf-8
 set encoding=utf-8
 set fileencodings=utf-8,chinese,latin-1
+set fileformat=unix
 
 "set nowrap                      " Do not wrap long lines
 set wrap lbr                    " wrap long lines between words
@@ -274,7 +274,7 @@ set splitright                  " Puts new vsplit windows to the right of the cu
 set splitbelow                  " Puts new split windows to the bottom of the current
 "set matchpairs+=<:>             " Match, to be used with %
 "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
-set fdm=marker                  " set fold method
+set fdm=syntax                  " set fold method
 
 " }
 
@@ -846,7 +846,7 @@ onoremap int :<c-u>normal! f<vit<cr>
     let g:UltiSnipsJumpBackwardTrigger = '<c-i>'
     let g:UltiSnipsEditSplit = 'horizontal'
     if !isdirectory('~/.vim/bundle/UltiSnips-ext')
-        let g:UltiSnipsSnippetsDir = '~/.vim/bundle/UltiSnips-ext'
+        let g:UltiSnipsSnippetsDir = '~/.vim/bundle/UltiSnips-ext/UltiSnips/'
     endif
     " }}}
 
