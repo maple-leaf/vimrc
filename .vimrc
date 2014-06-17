@@ -92,6 +92,8 @@ Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-surround'
 " undo mantainment
 Plugin 'sjl/gundo.vim'
+" swap window easily
+Plugin 'wesQ3/vim-windowswap'
 " intelligently toggling line numbers.
 "Plugin 'myusuf3/numbers.vim'
 " Autoclose
@@ -502,10 +504,6 @@ nmap <silent> <leader>ev :sp $MYVIMRC<cr>
 " 's'ource 'v'imrc)
 nmap <silent> <leader>sv :so $MYVIMRC<cr>
 " windows_control {
-"spilt window horizontal
-noremap <silent> <leader>w :sp<cr>
-"spilt window vertical
-noremap <silent> <leader>W :vsp<cr>
 " Move the cursor to the window left of the current one
 noremap <silent> <leader>h :wincmd h<cr>
 " Move the cursor to the window below the current one
@@ -601,6 +599,11 @@ else
   nmap ;cs :let @*=expand("%")<CR>
   nmap ;cl :let @*=expand("%:p")<CR>
 endif
+
+imap <A-l> <end>
+no <F1> <Nop>
+imap <F1> <Nop>
+vmap <F1> <Nop>
 " }
 """"""""""""""""""""""""""""""""""""""""""
 "}	
