@@ -149,6 +149,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'mhinz/vim-signify'
 " html5 syntax
 Plugin 'othree/html5.vim'
+Plugin 'fatih/vim-go'
 " Python and PHP Debugger
 " Bundle 'fisadev/vim-debug.vim'
 " XML/HTML tags navigation
@@ -771,7 +772,6 @@ onoremap int :<c-u>normal! f<vit<cr>
         nnoremap <silent> <leader>gr :Gread<CR>
         nnoremap <silent> <leader>gw :Gwrite<CR>
         nnoremap <silent> <leader>ge :Gedit<CR>
-        nnoremap <silent> <leader>gg :SignifyToggle<CR>
     "}}}
 
     " neocomplete {{{
@@ -886,6 +886,8 @@ onoremap int :<c-u>normal! f<vit<cr>
     " }}}
 
     " vim-signify {{{
+        let g:signify_disable_by_default = 1
+        nnoremap <silent> <leader>gg :SignifyToggle<CR>
     " }}}
 
     "vim-fontsize {{{
