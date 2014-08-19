@@ -137,7 +137,6 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'majutsushi/tagbar'
 " write html ease
 Plugin 'mattn/emmet-vim'
-" Python mode (indentation, doc, refactor, lints, code checking, motion and
 " Snippets manager (UltiSnips), and snippets repo
 Plugin 'SirVer/ultisnips'
 Plugin 'maple-leaf/UltiSnips-ext'
@@ -163,6 +162,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'amirh/HTML-AutoCloseTag'
 Plugin 'elzr/vim-json'
 if exists('g:support_python')
+" Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
 Plugin 'klen/python-mode'
 " Python code checker
@@ -657,7 +657,7 @@ onoremap int :<c-u>normal! f<vit<cr>
         let NERDTreeShowBookmarks=1
         let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
         let NERDTreeChDirMode=0
-        let NERDTreeQuitOnOpen=1
+        let NERDTreeQuitOnOpen=0
         let NERDTreeMouseMode=2
         let NERDTreeShowHidden=1
         let NERDTreeKeepTreeInNewTab=1
