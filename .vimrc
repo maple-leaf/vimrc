@@ -159,6 +159,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'mattn/webapi-vim'
 Plugin 'aperezdc/vim-template'
 Plugin 'pangloss/vim-javascript'
+Plugin 'heavenshell/vim-jsdoc'
 Plugin 'amirh/HTML-AutoCloseTag'
 Plugin 'elzr/vim-json'
 if exists('g:support_python')
@@ -605,6 +606,7 @@ imap <A-l> <end>
 no <F1> <Nop>
 imap <F1> <Nop>
 vmap <F1> <Nop>
+no q: <Nop>     "avoid annoying cmdline window
 " }
 """"""""""""""""""""""""""""""""""""""""""
 "}	
@@ -901,6 +903,16 @@ onoremap int :<c-u>normal! f<vit<cr>
                 \ "mode": "active",
                 \ "passive_filetypes": ["haml", "scss", "sass"] }
     no <F10> :SyntasticCheck<cr>
+    "}}}
+    "
+    "easygrep {{{
+    "set grepprg=D:\cygwin64\bin\grep\ -nHR\ --exclude=/*.svn,*.git,*.sublime-project,*.sublime-workspace/
+    set grepprg=grep\ -nH
+    let g:EasyGrepCommand = 1
+    let g:EasyGrepRecursive = 1
+    let g:EasyGrepFilesToExclude = ".svn,.git,.sublime-project,.sublime-workspace"
+    let g:EasyGrepWindow = 0
+    let g:EasyGrepJumpToMatch = 0
     "}}}
 
 " }}}
