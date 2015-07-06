@@ -107,7 +107,9 @@ Plugin 'danro/rename.vim'
 " Colorscheme
 Plugin 'altercation/vim-colors-solarized'
 " makes GVim-only colorschemes Just Work in terminal Vim
-Plugin 'godlygeek/csapprox'
+if (has("gui_running"))
+    Plugin 'godlygeek/csapprox'
+endif
 " colorshcemes collection
 Plugin 'flazz/vim-colorschemes'
 " handle gist
@@ -158,6 +160,7 @@ Plugin 'scrooloose/syntastic'
 " HTTP,OAuth.. protocol supporter and http,xml,json...parser
 Plugin 'mattn/webapi-vim'
 Plugin 'aperezdc/vim-template'
+Plugin 'maple-leaf/my-vim-templates'
 Plugin 'pangloss/vim-javascript'
 Plugin 'heavenshell/vim-jsdoc'
 Plugin 'amirh/HTML-AutoCloseTag'
@@ -217,6 +220,9 @@ if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"
   let g:solarized_visibility="normal"
   color solarized             " Load a colorscheme
 endif
+if (!has("gui_running"))
+    colorscheme kellys
+endif
 
 
 command! -nargs=1 Mkdir call EnsureDirExists(<f-args>)
@@ -228,11 +234,11 @@ elseif MySys() =="linux"
 endif
 " global variables define
 " set $VIMFILES
-" if MySys()=="windows"
-" let $VIMFILES = $VIM.'/vimfiles'
-" elseif MySys() =="linux"
-" let $VIMFILES = $HOME.'/.vim'
-" endif
+if MySys()=="windows"
+    let $VIMFILES = $VIM.'/vimfiles'
+elseif MySys() =="linux"
+    let $VIMFILES = $HOME.'/.vim'
+endif
 "set $VIMBUNDLE
 let $VIMBUNDLE=$HOME.'/.vim/bundle/'
 " set $MYVIMRC
@@ -253,7 +259,7 @@ call EnsureDirExists($HOME . '/.vim/sessions/')
 " maximum window size
 if MySys() == "windows"
   au GUIEnter * simalt ~x
-elseif MySys() == "linux"
+elseif MySys() == "linux" && has("gui_running")
   set lines=99 columns=999
 endif
 
@@ -639,10 +645,10 @@ onoremap int :<c-u>normal! f<vit<cr>
         set tags=./tags;/,~/.vimtags
 
         " Make tags placed in .git/tags file available in all levels of a repository
-        let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-        if gitroot != ''
-            let &tags = &tags . ',' . gitroot . '/.git/tags'
-        endif
+        "let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+        "if gitroot != ''
+            "let &tags = &tags . ',' . gitroot . '/.git/tags'
+        "endif
     " }}}
 
     " AutoCloseTag {{{
@@ -904,7 +910,7 @@ onoremap int :<c-u>normal! f<vit<cr>
                 \ "passive_filetypes": ["haml", "scss", "sass"] }
     no <F10> :SyntasticCheck<cr>
     "}}}
-    "
+
     "easygrep {{{
     "set grepprg=D:\cygwin64\bin\grep\ -nHR\ --exclude=/*.svn,*.git,*.sublime-project,*.sublime-workspace/
     set grepprg=grep\ -nH
@@ -913,6 +919,10 @@ onoremap int :<c-u>normal! f<vit<cr>
     let g:EasyGrepFilesToExclude = ".svn,.git,.sublime-project,.sublime-workspace"
     let g:EasyGrepWindow = 0
     let g:EasyGrepJumpToMatch = 0
+    "}}}
+
+    "vim-template {{{
+    let g:templates_directory = '~/.vim/bundle/my-vim-templates'
     "}}}
 
 " }}}
