@@ -415,7 +415,7 @@ set smartcase     " Case sensitive when uc present
 " Enable enhanced command-line completion. Presumes you have compiled
 " with +wildmenu.  See :help 'wildmenu'
 set wildmenu
-set wildignore+=*.a,*.o,.DS_Store,.git,.hg,.svn,*~,*.swp,*.tmp
+set wildignore+=*.a,*.o,.DS_Store,.git,.hg,.svn,*~,*.swp,*.tmp,*/.sass-cache/*,*.scssc
 set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
 set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
 
@@ -712,7 +712,7 @@ onoremap int :<c-u>normal! f<vit<cr>
     " }}}
 
     " ctrlp {{{
-        let g:ctrlp_working_path_mode = 'ra'
+        let g:ctrlp_working_path_mode = 'rw'
         " use PageUp and PageDown more often than \<C-f\> and \<C-B\>
         nnoremap <silent> <C-b> :CtrlPBuffer<CR>
         nnoremap <silent> <C-m> :CtrlPMRU<CR>
@@ -721,8 +721,8 @@ onoremap int :<c-u>normal! f<vit<cr>
         let g:ctrlp_clear_cache_on_exit = 0
         let g:ctrlp_show_hidden = 0
         let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-            \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+            \ 'dir':  '\.git$\|\.hg$\|\.svn$\|\.sass-cache$',
+            \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.scssc$' }
 
         " On Windows use 'dir' as fallback command.
         if has('win32') || has('win64')
