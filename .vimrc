@@ -1,13 +1,13 @@
 " Global Switcher {{{
 "   let g:keep_trailing_whitespace = 1
-let g:support_python = 1
-let g:support_php = 1
+let g:support_python = 0
+let g:support_php = 0
+let g:support_cucumber = 0
+let g:support_ruby_rails = 0
 let g:support_less_sass = 1
-let g:support_coffee = 1
+let g:support_coffee = 0
 let g:support_markdown = 1
-let g:support_liquid_haml = 1
-let g:support_cucumber = 1
-let g:support_ruby_rails = 1
+let g:support_liquid_haml = 0
 " }}}
 
 " Function and Command {{{
