@@ -927,6 +927,9 @@ onoremap int :<c-u>normal! f<vit<cr>
     "vim-template {{{
     let g:templates_directory = '~/.vim/bundle/my-vim-templates'
     "}}}
+    "vim-jsx {{{
+    let g:jsx_ext_required = 0
+    "}}}
 
 " }}}
 
