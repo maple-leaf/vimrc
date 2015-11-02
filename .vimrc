@@ -725,6 +725,7 @@ onoremap int :<c-u>normal! f<vit<cr>
         let g:ctrlp_custom_ignore = {
             \ 'dir':  '\.git$\|\.hg$\|\.svn$\|\.sass-cache$',
             \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.scssc$' }
+        let g:ctrlp_mruf_relative = 1   " only MRU files in the current working directory
 
         " On Windows use 'dir' as fallback command.
         if has('win32') || has('win64')
