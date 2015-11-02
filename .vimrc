@@ -205,6 +205,8 @@ Plugin 'tpope/vim-cucumber'
 Plugin 'quentindecock/vim-cucumber-align-pipes'
 endif
 
+" react jsx support
+Plugin 'mxw/vim-jsx.git'
 " }}}
 
 " }}}
