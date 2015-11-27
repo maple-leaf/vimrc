@@ -17,7 +17,7 @@ function! MySys()
   if has("win16")||has("win32")||has("dos")||has("dos16")||has("dos32")||has("win64")||has("win95")
     return "windows"
   elseif has("unix")
-    return "linux"
+      return has('mac') ? "mac" : "linux"
   endif
 endfunction
 
@@ -85,7 +85,7 @@ Plugin 'jistr/vim-nerdtree-tabs'
 " bringing Sublime Text's awesome multiple selection feature into Vim
 Plugin 'terryma/vim-multiple-cursors'
 " Code and files fuzzy finder
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 " Airline
 Plugin 'bling/vim-airline'
 " Surround
@@ -127,7 +127,8 @@ Plugin 'tpope/vim-abolish.git'
 " Adjust font-size
 Plugin 'drmikehenry/vim-fontsize'
 " Grep tool
-Plugin 'dkprice/vim-easygrep'
+"Plugin 'dkprice/vim-easygrep'
+Plugin 'rking/ag.vim'
 
 " }}}
 " program fun and language support {{{
@@ -222,10 +223,6 @@ if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"
   let g:solarized_visibility="normal"
   color solarized             " Load a colorscheme
 endif
-if (!has("gui_running"))
-    colorscheme kellys
-endif
-
 
 command! -nargs=1 Mkdir call EnsureDirExists(<f-args>)
 
@@ -446,9 +443,9 @@ no <F5> :w<cr>:!python %<cr>
 
 " arrow key
 " move current up
-no <up> ddkP
+no <up> <PageUp>
 " move current down
-no <down> ddp
+no <down> <PageDown>
 " move to next tab
 no <right> :tabnext<CR>
 " move to prev tab
@@ -916,19 +913,29 @@ onoremap int :<c-u>normal! f<vit<cr>
 
     "easygrep {{{
     "set grepprg=D:\cygwin64\bin\grep\ -nHR\ --exclude=/*.svn,*.git,*.sublime-project,*.sublime-workspace/
-    set grepprg=grep\ -nH
-    let g:EasyGrepCommand = 1
-    let g:EasyGrepRecursive = 1
-    let g:EasyGrepFilesToExclude = ".svn,.git,.sublime-project,.sublime-workspace"
-    let g:EasyGrepWindow = 0
-    let g:EasyGrepJumpToMatch = 0
+    "set grepprg=grep\ -nH
+    "let g:EasyGrepCommand = 1
+    "let g:EasyGrepRecursive = 1
+    "let g:EasyGrepFilesToExclude = ".svn,.git,.sublime-project,.sublime-workspace"
+    "let g:EasyGrepWindow = 0
+    "let g:EasyGrepJumpToMatch = 0
     "}}}
 
-    "vim-template {{{
-    let g:templates_directory = '~/.vim/bundle/my-vim-templates'
+    "ag.vim {{{
+    command! -nargs=* Agi call CustomAgSearch(<f-args>)
+    function! CustomAgSearch(ignores, key)
+        let l:ignores = split(a:ignores, '-')
+        let l:ignoresStr = ""
+        for ignore in l:ignores
+            let l:ignoresStr .= "--ignore "
+            let l:ignoresStr .= ignore
+        endfor
+        echo a:key
+        Ag! l:ignoresStr a:key  " can't not work here, a:key will be pass instead of its value
+    endfunction
     "}}}
-    "vim-jsx {{{
-    let g:jsx_ext_required = 0
+    "vim-template {{{
+    let g:templates_directory = "~/.vim/bundle/my-vim-templates"
     "}}}
 
 " }}}
