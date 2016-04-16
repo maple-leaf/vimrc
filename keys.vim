@@ -134,4 +134,9 @@ imap ¬ <end>
 no <F1> <Nop>
 imap <F1> <Nop>
 vmap <F1> <Nop>
-no q: <Nop>     "avoid annoying cmdline window
+nmap q: <Nop>     "avoid annoying cmdline window
+
+" write as root!
+cmap w!! w !sudo tee > /dev/null %
+
+no <Leader>n :b#<cr>

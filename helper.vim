@@ -32,3 +32,7 @@ function! StripTrailingWhitespace()
     let @/=_s
     call cursor(l, c)
 endfunction
+
+function! Rsync()
+    !rsync -azcuv --relative --delete-after --exclude ".sync" --exclude ".git" . hlg:/service/develop/fengye/zsadmin/view/
+endfunction
