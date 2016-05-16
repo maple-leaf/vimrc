@@ -1,8 +1,79 @@
+function! NeomakeConfig()
+    " eslint --init First!! in your project
+    autocmd! BufWritePost * Neomake
+    let g:neomake_open_list = 0
+    let g:neomake_list_height = 5
+    let g:neomake_place_signs = 1
+    nmap <Leader><Space>n :lnext<CR>      " next error/warning
+    nmap <Leader><Space>p :lprev<CR>      " previous error/warning
+
+    "let g:neomake_javascript_jshint_maker = {
+                "\ 'args': ['--verbose', '--config=$XDG_DATA_HOME/nvim/.jshintrc'],
+                "\ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
+                "\ }
+    let g:neomake_javascript_enabled_makers = ['eslint']
+
+    function! NeomakeESlintChecker()
+        "  configure b:syntastic_javascript_eslint_exec to point to the
+        "  locally installed version of eslint if it exists otherwise fallback to the globally installed
+        "  https://github.com/benekastah/neomake/issues/247#issuecomment-175808155
+        " https://github.com/airbnb/javascript/issues/465#issuecomment-173281502
+        let l:npm_bin = ''
+        "let l:eslint = 'eslint'
+        let l:eslint = 'eslint_d' " https://github.com/mantoni/eslint_d.js make eslint faster
+
+        if executable('npm')
+            let l:npm_bin = split(system('npm bin'), '\n')[0]
+        endif
+
+        if strlen(l:npm_bin) && executable(l:npm_bin . '/eslint_d')
+            let l:eslint = l:npm_bin . '/eslint_d'
+        endif
+
+        let b:neomake_javascript_eslint_exe = l:eslint
+    endfunction
+
+    autocmd FileType javascript :call NeomakeESlintChecker()
+    autocmd! BufWritePost,BufReadPost * Neomake
+endfunction
+call NeomakeConfig()
+
+function! ImportJsConfig()
+    " Import the module for the variable under the cursor.
+    no <Leader>im   :ImportJSImport<cr>
+    " Import any missing modules and remove any modules that are not used.
+    no <Leader>ia   :ImportJSFixImports<cr>
+    " Go to the module of the variable under the cursor.
+    no <Leader>gi   :ImportJSGoTo<cr>
+endfunction
+call ImportJsConfig()
+
+function! TernJsConfig()
+    " Jump to the definition of the thing under the cursor.
+    no <Leader>tf :TernDef<cr>
+    " Look up the documentation of something.
+    no <Leader>td :TernDoc<cr>
+    " Find the type of the thing under the cursor.
+    no <Leader>tt :TernType<cr>
+    " Show all references to the variable or property under the cursor.
+    no <Leader>tr :TernRefs<cr>
+    " Rename the variable under the cursor.
+    no <Leader>tn :TernRename<cr>
+endfunction
+call TernJsConfig()
+
 function! CtrlpConfig()
     let g:ctrlp_working_path_mode = 'rw'
-    " use PageUp and PageDown more often than \<C-f\> and \<C-B\>
-    nnoremap <silent> <C-b> :CtrlPBuffer<CR>
-    nnoremap <silent> <C-m> :CtrlPMRU<CR>
+    "nnoremap <silent> <C-b> :CtrlPBuffer<CR>
+    function! MapCr()
+        if &buftype ==# "quickfix"
+            execute "normal! \<CR>"
+        else
+            ":CtrlPMRUFiles<cr>
+            :CtrlPBuffer
+        endif
+    endfunction
+    nnoremap <silent> <C-m> :call MapCr()<cr>
     let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:50'
     let g:ctrlp_use_caching = 1
     let g:ctrlp_clear_cache_on_exit = 0
@@ -34,163 +105,55 @@ endfunction
 call CtrlpConfig()
 call ctrlp_bdelete#init()
 
-" Session
-call EnsureDirExists($HOME . '/.vim/sessions/')
-set sessionoptions-=help
-let g:session_directory = '~/.vim/sessions/'
-let g:session_autosave = 'yes'
-let g:session_autoload = 'no'
-let g:session_default_name = "last"
-no ms :SaveSession 
-no \s :OpenSession 
-
-function! NeoCompleteConfig()
-    " Disable AutoComplPop.
-    let g:acp_enableAtStartup = 0
-    " Use neocomplete.
-    let g:neocomplete#enable_at_startup = 1
-    " Use smartcase.
-    let g:neocomplete#enable_smart_case = 1
-    " Set minimum syntax keyword length.
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
-    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-    " Define dictionary.
-    let g:neocomplete#sources#dictionary#dictionaries = {
-                \ 'default' : '',
-                \ 'vimshell' : $HOME.'/.vimshell_hist',
-                \ 'scheme' : $HOME.'/.gosh_completions'
-                \ }
-
-    " Define keyword.
-    if !exists('g:neocomplete#keyword_patterns')
-        let g:neocomplete#keyword_patterns = {}
-    endif
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-    " Plugin key-mappings.
-    inoremap <expr><C-g>     neocomplete#undo_completion()
-    inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-    " Recommended key-mappings.
-    " <CR>: close popup and save indent.
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-        return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-        " For no inserting <CR> key.
-        "return pumvisible() ? "\<C-y>" : "\<CR>"
-    endfunction
-    " <TAB>: completion.
-    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-    " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    " Close popup by <Space>.
-    "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-    " AutoComplPop like behavior.
-    "let g:neocomplete#enable_auto_select = 1
-
-    " Shell like behavior(not recommended).
-    "set completeopt+=longest
-    "let g:neocomplete#enable_auto_select = 1
-    "let g:neocomplete#disable_auto_complete = 1
-    "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-    " Enable omni completion.
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-    " Enable heavy omni completion.
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-        let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-    "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-    " For perlomni.vim setting.
-    " https://github.com/c9s/perlomni.vim
-    let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-endfunction
-"call NeoCompleteConfig()
-
-function! YouCompleteMe()
-    let g:ycm_filetype_blacklist = {
-      \ 'tagbar' : 1,
-      \ 'qf' : 1,
-      \ 'notes' : 1,
-      \ 'markdown' : 1,
-      \ 'unite' : 1,
-      \ 'text' : 1,
-      \ 'vimwiki' : 1,
-      \ 'gitcommit' : 1,
-      \}
-
-    autocmd FileType javascript setlocal omnifunc=tern#Complete
-endfunction
-
-function! NeoSnippetConfig()
-    imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    xmap <C-k>     <Plug>(neosnippet_expand_target)
-endfunction
-"call NeoSnippetConfig()
-
-" Airline
-let g:airline_theme='powerlineish'
-  if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-  endif
-let g:airline_symbols.branch=''
-let g:airline#extensions#default#section_truncate_width = {
-\ 'a': 80,
-\ 'x': 80,
-\ 'y': 80,
-\ 'z': 80,
-\ }
-
+" Unite
 function! UniteConfig()
-    " c-l refresh results
+    " Set up some custom ignores
+    call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+                \ 'ignore_pattern', join([
+                \ '\.git/',
+                \ 'node_modules/',
+                \ ], '\|'))
+
+    "if executable('ag')
+        "let g:unite_source_rec_async_command= 'ag --follow --nocolor --nogroup --hidden -g ""'
+        "let g:unite_source_grep_command = 'ag'
+        "let g:unite_source_grep_default_opts = '--column --nogroup --nogroup'
+        "let g:unite_source_grep_recursive_opt = ''
+    "endif
+
+    let g:unite_source_rec_max_cache_files = 99999
+
+    let g:unite_source_history_yank_enable = 1
     call unite#filters#matcher_default#use(['matcher_fuzzy'])
-    call unite#custom#source(
-                \ 'neomru/file', 'matchers',
-                \ ['matcher_project_files', 'matcher_fuzzy'])
-    " this is to slow
-    "nnoremap <c-p> :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
-    "nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
-    "nnoremap <c-m> :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
-    nnoremap <c-o> :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
-    "nnoremap <c-h> :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
-    "nnoremap <c-b> :<C-u>Unite -no-split -buffer-name=buffer -start-insert buffer<cr>
-    nnoremap <leader>/ :<C-u>Unite -no-split -start-insert -buffer-name=lineSearch  line<cr>
-
-    nnoremap <c-f> :<C-u>Unite -no-split -start-insert -buffer-name=projectSearch grep -no-empty<cr>
-    " Using ag as recursive command.
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts =
-                \ '-i --vimgrep --hidden --ignore ' .
-                \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-    let g:unite_source_grep_recursive_opt = ''
-
-    " when press escape, exit unite.
-    " this will cause arrow keys not working correctly which cause
-    " unit exit and insert charactor in your current file
-    " https://github.com/Shougo/unite.vim/issues/693
-    au FileType unite imap <buffer><silent> <ESC> <Plug>(unite_exit)
+    nnoremap <C-p> :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
+    nnoremap <C-i> :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
+    "nnoremap <C-m> :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru:!<cr>
+    nnoremap <C-o> :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
+    nnoremap <C-h> :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
+    nnoremap <C-m> :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
 endfunction
 "call UniteConfig()
+
+" Session
+function! SessionConfig()
+    call EnsureDirExists($HOME . '/.vim/sessions/')
+    set sessionoptions-=help
+    let g:session_directory = $HOME . '/.vim/sessions/'
+    let g:session_autosave = 'yes'
+    let g:session_autoload = 'no'
+    let g:session_default_name = "last"
+    no ms :SaveSession 
+    no \s :OpenSession 
+endfunction
+call SessionConfig()
 
 function! UltiSnipsConfig()
     let g:UltiSnipsExpandTrigger = '<c-k>'
     let g:UltiSnipsJumpForwardTrigger = '<c-k>'
     let g:UltiSnipsJumpBackwardTrigger = '<c-i>'
     let g:UltiSnipsEditSplit = 'horizontal'
-    if !isdirectory('~/.vim/bundle/UltiSnips-ext')
-        let g:UltiSnipsSnippetsDir = '~/.vim/bundle/UltiSnips-ext/UltiSnips/'
+    if isdirectory($HOME . '/vimrc/plugged/UltiSnips-ext')
+        let g:UltiSnipsSnippetsDir = $HOME . '/.vim/plugged/UltiSnips-ext/UltiSnips/'
     endif
 endfunction
 call UltiSnipsConfig()
@@ -199,12 +162,31 @@ call UltiSnipsConfig()
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-if (has('gui_running'))
-    function! FontsizeConfig()
-        nmap <silent> <c-=>  <Plug>FontsizeBegin
-        nmap <silent> <c-+>  <Plug>FontsizeInc
-        nmap <silent> <Leader>-  <Plug>FontsizeDec
-        nmap <silent> <Leader>0  <Plug>FontsizeDefault
-    endfunction
-    call FontsizeConfig()
-endif
+function! AirlineConfig()
+    let g:airline_theme='powerlineish'
+    if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+    endif
+    let g:airline_symbols.branch=''
+    let g:airline#extensions#default#section_truncate_width = {
+                \ 'a': 80,
+                \ 'x': 80,
+                \ 'y': 80,
+                \ 'z': 80,
+                \ }
+    let g:airline#extensions#branch#enabled = 1
+endfunction
+call AirlineConfig()
+
+function! FugittiveConfig()
+  nmap <Leader>gs <Plug>GitGutterStageHunk
+  nmap <Leader>gr <Plug>GitGutterRevertHunk
+  nmap <Leader>gp <Plug>GitGutterPreviewHunk
+endfunction
+call FugittiveConfig()
+
+" vim-over
+function! VimOverConfig()
+    nmap <Leader>ss :OverCommandLine<cr>
+endfunction
+call VimOverConfig()

@@ -64,7 +64,6 @@ call EnsureDirExists($HOME . '/.vim/tmp/swap/')
 set backupdir=$HOME/.vim/tmp/backup/
 set directory=$HOME/.vim/tmp/swap/
 
-
 set laststatus=2
 
 function! CustomStatusLine()
@@ -72,7 +71,7 @@ function! CustomStatusLine()
   " Broken down into easily includeable segments
   set statusline=%<%f\                     " Filename
   set statusline+=%w%h%m%r                 " Options
-  set statusline+=%{fugitive#statusline()} " Git Hotness
+  "set statusline+=%{fugitive#statusline()} " Git Hotness
   set statusline+=\ [%{&ff}/%Y]            " Filetype
   set statusline+=\ [%{getcwd()}]          " Current dir
   set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
@@ -81,6 +80,17 @@ endfunction
 " prevent '<esc>' delay in terminal http://stackoverflow.com/a/33957679/2326199
 set ttimeout
 set ttimeoutlen=100
+
+" netrw
+let g:netrw_liststyle=3
+let g:netrw_winsize=30
+
+" paste mode
+:map <F10> :set paste<CR>
+:map <F9> :set nopaste<CR>
+:imap <F10> <C-O>:set paste<CR>
+:imap <F9> <nop>
+:set pastetoggle=<F9>
 
 augroup MyAutoCommands
     " Clear old autocmds in group
@@ -92,7 +102,7 @@ augroup MyAutoCommands
     autocmd BufRead,BufNewFile *.liquid,*.mustache setfiletype liquid
     autocmd BufNewFile,BufRead *.coffee set filetype=coffee
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
-    autocmd BufNewFile,BufRead *.hbs,*.phtml set filetype=html
+    autocmd BufNewFile,BufRead *.hbs,*.phtml,*.vue set filetype=html
 
     " Ruby files
     autocmd FileType ruby,eruby, imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
@@ -109,8 +119,30 @@ augroup MyAutoCommands
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml,html autocmd BufWritePre <buffer> if !exists('g:keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
-    autocmd FileType html,xml,xhtml,css,sass,scss,less set fdm=indent | set fdl=3
+    autocmd FileType html,xml,xhtml,css,sass,scss,less,javascript set fdm=indent | set fdl=3
 
     " disable scratch preview window when select completion
     set completeopt-=preview
 augroup END
+
+" reload vim config
+command! Reload :source ~/vimrc/init.vim
+
+function! RsyncToDev(pattern)
+    let l:bufferList = filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    let l:matchingBuffers = filter(bufferList, 'bufname(v:val) =~ a:pattern')
+    if a:pattern == 'zs'
+        echo 'Rsyncing ' . a:pattern
+        :!rsync -azcuv --relative --delete-after --exclude ".sync" --exclude ".git" --exclude "node_modules" . hlg:/service/develop/fengye/zsadmin/view/
+    elseif a:pattern == 'hyaf'
+        echo 'Rsyncing ' . a:pattern
+        :!rsync -azcuv --relative --delete-after --exclude ".sync" --exclude ".git" --exclude "node_modules" . hlg:/service/develop/fengye/hyaf/view/
+    elseif a:pattern == 'hyafeditor'
+        echo 'Rsyncing ' . a:pattern
+        :!rsync -azcuv --relative --delete-after --exclude ".sync" --exclude ".git" --exclude "node_modules" . hlg:/service/develop/fengye/hyaf/view_wireless
+    else
+        echo 'Wrong target!!!!'
+    endif
+endfunction
+
+command! -nargs=1 Rsync call RsyncToDev('<args>')
