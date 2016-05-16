@@ -1,0 +1,82 @@
+" Return OS Type"
+function! MySys()
+    if has("win32")||has("win64")
+        return "Windows"
+    elseif has("unix")
+        return "Linux"
+endfunction
+
+
+" Make dir at current pwd if not exists
+" \CMD Usage: Mkdir folder_name
+function! EnsureDirExists (dir)
+  if !isdirectory(a:dir)
+    if exists("*mkdir")
+      call mkdir(a:dir,'p')
+      echo "Created directory: " . a:dir
+    else
+      echo "Please create directory: " . a:dir
+      !cmd
+    endif
+  endif
+endfunction
+command! -nargs=1 Mkdir call EnsureDirExists(<f-args>)
+
+
+" Output command results to a new tab
+" \CMD Usage: TabMessage cmd
+function! TabMessage(cmd)
+  redir => message
+  silent execute a:cmd
+  redir END
+  tabnew
+  silent put=message
+  set nomodified
+endfunction
+command! -nargs=+ -complete=command TabMessage call TabMessage(<q-args>)
+
+
+"  change C:\data\doc.txt to C:/data/doc.txt, or vice versa.
+" toggle slashes in the current line, or a range of lines.
+function! ToggleSlash(independent) range
+  let from = ''
+  for lnum in range(a:firstline, a:lastline)
+    let line = getline(lnum)
+    let first = matchstr(line, '[/\\]')
+    if !empty(first)
+      if a:independent || empty(from)
+        let from = first
+      endif
+      let opposite = (from == '/' ? '\' : '/')
+      call setline(lnum, substitute(line, from, opposite, 'g'))
+    endif
+  endfor
+endfunction
+command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
+noremap <silent> <Leader><Bslash>> :ToggleSlash<CR>
+
+
+" Escape/unescape & < > HTML entities in range (default current line).
+function! HtmlEntities(line1, line2, action)
+  let search = @/
+  let range = 'silent ' . a:line1 . ',' . a:line2
+  let entities = {
+              \ '&lt;': '<',
+              \ '&gt;': '>',
+              \ '&copy;': '©'}
+  if a:action == 0  " must convert &amp; last
+    for [entity, html] in items(entities)
+        execute range . 'sno/' .entity. '/' .html. '/eg'
+    endfor
+    execute range . 'sno/&amp;/&/eg'
+  else              " must convert & first
+    execute range . 'sno/&/&amp;/eg'
+    for [entity, html] in items(entities)
+        execute range . 'sno/' .html. '/' .entity. '/eg'
+    endfor
+  endif
+  nohl
+  let @/ = search
+endfunction
+command! -range ToEntities call HtmlEntities(<line1>, <line2>, 1)
+command! -range ToHtml call HtmlEntities(<line1>, <line2>, 0)
